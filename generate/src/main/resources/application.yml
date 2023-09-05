@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.10.102:3306?shequ-product&useSSL=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+
+server:
+  port: 8086

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ojq.mapper.AdminMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ojq.domain.po.acl.Admin">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="ware_id" property="wareId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, password, name, phone, ware_id, create_time, update_time, is_deleted
+    </sql>
+
+    <select id="findUserByUsername" resultType="com.ojq.domain.po.acl.Admin">
+        select <include refid="Base_Column_List"/> from admin where username = #{username} and is_deleted = 0
+    </select>
+
+    <select id="findUserPermsListByUserId" resultType="java.lang.String">
+        select p.code from admin a
+            join admin_role ar on a.id = ar.admin_id
+            join role r on ar.role_id = r.id
+            join role_permission rp ON rp.role_id = r.id
+            join permission p on rp.permission_id = p.id
+            where a.id = #{id} and p.code is not null and p.code != ''
+    </select>
+
+
+</mapper>

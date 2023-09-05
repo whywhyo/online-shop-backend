@@ -1,0 +1,6 @@
+mybatis-plus:
+  type-aliases-package: com.ojq.domain.po  #  别名包扫描
+
+  global-config:
+    db-config:
+      id-type: auto  #  配置自增id
