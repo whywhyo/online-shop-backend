@@ -7,6 +7,7 @@ import com.ojq.domain.dto.acl.RoleQueryDto;
 import com.ojq.domain.po.acl.Role;
 import com.ojq.result.Result;
 import com.ojq.service.RoleService;
+import com.ojq.utils.SecurityUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,25 +26,24 @@ import java.util.List;
  * @since 2023-09-04
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/admin/role")
 public class RoleController {
 
     @Autowired
     private RoleService roleService;
 
     @ApiOperation(value = "获取角色分页列表")
-    @GetMapping("{page}/{limit}")
+    @GetMapping("{current}/{limit}")
     public Result index(
-            @ApiParam(name = "page", value = "当前页码", required = true)
-            @PathVariable Long page,
+            @ApiParam(name = "current", value = "当前页码", required = true)
+            @PathVariable Long current,
 
             @ApiParam(name = "limit", value = "每页记录数", required = true)
             @PathVariable Long limit,
 
             @ApiParam(name = "roleQueryVo", value = "查询对象", required = false)
             RoleQueryDto roleQueryDto) {
-        Page<Role> pageParam = new Page<>(page, limit);
-        IPage<Role> pageModel = roleService.selectPage(pageParam, roleQueryDto);
+        Map<String,Object> pageModel = roleService.selectAllRoleByPage(current,limit, roleQueryDto);
         return Result.success(pageModel);
     }
 

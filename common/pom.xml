@@ -45,6 +45,7 @@
 
 
 
+
 <!--        &lt;!&ndash; 服务调用feign &ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.cloud</groupId>-->

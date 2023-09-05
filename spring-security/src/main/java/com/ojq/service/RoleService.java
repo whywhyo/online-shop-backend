@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ojq.domain.dto.acl.RoleQueryDto;
 import com.ojq.domain.po.acl.Role;
 
+import java.util.Map;
+
 
 /**
  * <p>
@@ -18,5 +20,8 @@ import com.ojq.domain.po.acl.Role;
  */
 public interface RoleService extends IService<Role> {
 
-    IPage<Role> selectPage(Page<Role> pageParam, RoleQueryDto roleQueryDto);
+
+    Map<String, Object> findRoleByUserId();
+
+    Map<String, Object> selectAllRoleByPage(Long current, Long limit, RoleQueryDto roleQueryDto);
 }

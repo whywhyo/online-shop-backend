@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 /**
  * @Author Jinquan_Ou
@@ -47,6 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter(redisTemplate);
         // 这是配置的关键，决定哪些接口开启防护，哪些接口绕过防护
         http
                 //关闭csrf跨站请求伪造
@@ -55,12 +58,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .authorizeRequests()
                 // 指定某些接口不需要通过验证即可访问。登陆接口肯定是不需要认证的
-                .antMatchers("/admin/system/index/login").permitAll()
+                .antMatchers("/admin/system/index/login","/favicon.ico","/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/doc.html", "/v2/api-docs").permitAll()
                 // 这里意思是其它所有接口需要认证才能访问
                 .anyRequest().authenticated()
                 .and()
                 //TokenAuthenticationFilter放到UsernamePasswordAuthenticationFilter的前面，这样做就是为了除了登录的时候去查询数据库外，其他时候都用token进行认证。
-                .addFilterBefore(new TokenAuthenticationFilter(redisTemplate), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilter(new TokenLoginFilter(authenticationManager(),redisTemplate));
 
         //禁用session
@@ -82,7 +85,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/favicon.ico","/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/doc.html");
+        web.ignoring().antMatchers("/favicon.ico","/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**", "/doc.html", "/v2/api-docs","/admin/user/save");
     }
+
 
 }

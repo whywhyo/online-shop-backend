@@ -10,6 +10,7 @@ package com.ojq.filter;
 //import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSON;
 import com.ojq.constValue.RedisKey;
+import com.ojq.domain.po.acl.Admin;
 import com.ojq.jwt.JwtHelper;
 import com.ojq.result.Result;
 import com.ojq.result.ResultCodeEnum;
@@ -17,6 +18,7 @@ import com.ojq.result.ResultCodeEnum;
 import com.ojq.service.AdminService;
 import com.ojq.service.impl.AdminServiceImpl;
 import com.ojq.utils.ResponseUtil;
+import com.ojq.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,10 +58,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         logger.info("uri:" + request.getRequestURI() + "正在访问");
-        //如果是登录接口，直接放行
-        if ("/admin/system/index/login".equals(request.getRequestURI())) {
-            chain.doFilter(request, response);
-            return;
+        //如果是以下接口，直接放行
+        List<String> ignorePathList = SecurityUtils.getIgnorePathList();
+        for (String path : ignorePathList) {
+            if (path.startsWith(request.getRequestURI())) {
+                chain.doFilter(request, response);
+                return;
+            }
         }
 
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
@@ -81,6 +86,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             String username = JwtHelper.getUsername(token);
             logger.info("useruame:"+username);
 
+            //封装一个principle对象，方便登录之后直接获得数据
+            Admin principle = new Admin();
+            principle.setId(JwtHelper.getUserId(token));
+            principle.setUsername(JwtHelper.getUsername(token));
+
             if (!StringUtils.isEmpty(username)) {
                 //username不为空，可以验证username
                 String authoritiesString = (String) redisTemplate.opsForValue().get(USER_AUTHORITY +username);
@@ -89,9 +99,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 for (Map map : mapList) {
                     authorities.add(new SimpleGrantedAuthority((String)map.get("authority")));
                 }
-                return new UsernamePasswordAuthenticationToken(username, null, authorities);
+                return new UsernamePasswordAuthenticationToken(principle, null, authorities);
             }else {
-                return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+                return new UsernamePasswordAuthenticationToken(principle, null, new ArrayList<>());
             }
         }
         return null;

@@ -3,10 +3,15 @@ package com.ojq.domain.po.acl;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ojq.domain.po.base.BaseEntity;
+import com.ojq.validation.anno.PasswordConstraint;
+import com.ojq.validation.group.RegisterGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -28,11 +33,15 @@ public class Admin extends BaseEntity implements Serializable {
 //    @TableId(value = "id", type = IdType.AUTO)
 //    private Long id;
 
+
+    @NotBlank(message = "用户名不能为空",groups = {RegisterGroup.class})
     @ApiModelProperty("用户名")
     @TableField("username")
     private String username;
 
+
     @ApiModelProperty("密码")
+    @PasswordConstraint(groups = {RegisterGroup.class})
     @TableField("password")
     private String password;
 
