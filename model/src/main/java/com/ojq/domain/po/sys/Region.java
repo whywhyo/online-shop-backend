@@ -1,14 +1,14 @@
 package com.ojq.domain.po.sys;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ojq.domain.po.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -16,25 +16,46 @@ import java.io.Serializable;
  * </p>
  *
  * @author ojq
- * @since 2023年07月04日
+ * @since 2023-09-11
  */
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 @TableName("region")
-@ApiModel(value = "Region对象", description = "地区表")
-public class Region extends BaseEntity implements Serializable {
+public class Region implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("上级id")
-    @TableField("parent_id")
+    /**
+     * id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    /**
+     * 上级id
+     */
     private Long parentId;
 
-    @ApiModelProperty("名称")
-    @TableField("name")
+    /**
+     * 名称
+     */
     private String name;
 
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
 
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
+    /**
+     * 删除标记（0:不可用 1:可用）
+     */
+    private Integer isDeleted;
 
 
 }

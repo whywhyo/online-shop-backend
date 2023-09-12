@@ -1,15 +1,15 @@
 package com.ojq.domain.po.sys;
 
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ojq.domain.po.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -17,43 +17,71 @@ import java.math.BigDecimal;
  * </p>
  *
  * @author ojq
- * @since 2023年07月03日
+ * @since 2023-09-11
  */
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 @TableName("ware")
-@ApiModel(value = "Ware对象", description = "仓库表")
-public class Ware extends BaseEntity implements Serializable {
+public class Ware implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("名称")
-    @TableField("name")
+    /**
+     * id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    /**
+     * 名称
+     */
     private String name;
 
-    @ApiModelProperty("省code")
-    @TableField("province")
+    /**
+     * 省code
+     */
     private String province;
 
-    @ApiModelProperty("城市code")
-    @TableField("city")
+    /**
+     * 城市code
+     */
     private String city;
 
-    @ApiModelProperty("区域code")
-    @TableField("district")
+    /**
+     * 区域code
+     */
     private String district;
 
-    @ApiModelProperty("详细地址")
-    @TableField("detail_address")
+    /**
+     * 详细地址
+     */
     private String detailAddress;
 
-    @ApiModelProperty("经度")
-    @TableField("longitude")
+    /**
+     * 经度
+     */
     private BigDecimal longitude;
 
-    @ApiModelProperty("纬度")
-    @TableField("latitude")
+    /**
+     * 纬度
+     */
     private BigDecimal latitude;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
+    /**
+     * 删除标记（0:不可用 1:可用）
+     */
+    private Integer isDeleted;
 
 
 }

@@ -42,7 +42,7 @@ public class SkuInfo implements Serializable {
 
     @ApiModelProperty("商品类型：0->普通商品 1->秒杀商品")
     @TableField("sku_type")
-    private Boolean skuType;
+    private Integer skuType;
 
     @ApiModelProperty("sku名称")
     @TableField("sku_name")
@@ -58,15 +58,15 @@ public class SkuInfo implements Serializable {
 
     @ApiModelProperty("上架状态：0->下架；1->上架")
     @TableField("publish_status")
-    private Boolean publishStatus;
+    private Integer publishStatus;
 
     @ApiModelProperty("审核状态：0->未审核；1->审核通过")
     @TableField("check_status")
-    private Boolean checkStatus;
+    private Integer checkStatus;
 
     @ApiModelProperty("是否新人专享：0->否；1->是")
     @TableField("is_new_person")
-    private Boolean newPerson;
+    private Integer newPerson;
 
     @ApiModelProperty("排序")
     @TableField("sort")

@@ -30,6 +30,13 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 
+
 # 启用swagger的增强功能需要使用到的
 knife4j:
   enable: true
+
+aliyun:
+  endpoint: oss-cn-guangzhou.aliyuncs.com
+  keyId: LTAI5tRrgbrS7xRh9Yt6WzLR
+  keySecret: LVOFerUTlc0Mf3egCAahd4tCQwfLRb
+  bucketName: shop-ojq888

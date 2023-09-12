@@ -1,13 +1,14 @@
 package com.ojq.domain.po.sys;
 
-import com.baomidou.mybatisplus.annotation.*;
-import com.ojq.domain.po.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -15,34 +16,61 @@ import java.io.Serializable;
  * </p>
  *
  * @author ojq
- * @since 2023年07月03日
+ * @since 2023-09-11
  */
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 @TableName("region_ware")
-@ApiModel(value = "仓库-地区对象", description = "城市仓库关联表")
-public class RegionWare extends BaseEntity implements Serializable {
+public class RegionWare implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "开通区域")
-    @TableField("region_id")
+    /**
+     * id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    /**
+     * 开通区域id
+     */
     private Long regionId;
 
-    @ApiModelProperty(value = "区域名称")
-    @TableField("region_name")
+    /**
+     * 区域名称
+     */
     private String regionName;
 
-    @ApiModelProperty(value = "仓库")
-    @TableField("ware_id")
+    /**
+     * 仓库
+     */
     private Long wareId;
 
-    @ApiModelProperty(value = "仓库名称")
-    @TableField("ware_name")
+    /**
+     * 仓库名称
+     */
     private String wareName;
 
-    @ApiModelProperty(value = "状态（0：未开通 1：已开通）")
-    @TableField("status")
+    /**
+     * 状态（0：未开通 1：已开通）
+     */
     private Integer status;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
+    /**
+     * 删除标记（0:不可用 1:可用）
+     */
+    private Integer isDeleted;
+
 
 }
